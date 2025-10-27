@@ -30,16 +30,16 @@ static char	*ft_strchr(char *s, int c)
 	return (0);
 }
 
-char	*fill_line_buffer(int fd, char *left_c, char *buffer)
+static char	*fill_line_buffer(int fd, char *left_c, char *buffer)
 {
 	char	*temp;
 
-	read(fd, )
+	read(fd, buffer, BUFFER_SIZE);
 }
 
-char	*set_line(char *line_buffer)
+static char	*set_line(char *line_buffer)
 {
-	
+
 }
 
 char	*get_next_line(int fd)
