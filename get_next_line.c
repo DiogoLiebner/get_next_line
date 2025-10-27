@@ -11,14 +11,8 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdlib.h>
-#include <unistd.h>
 
-char	*get_next_line(int fd)
-{
-}
-
-static char	*ft_strchr(const char *s, int c)
+static char	*ft_strchr(char *s, int c)
 {
 	char	*ptr;
 	int		i;
@@ -34,4 +28,20 @@ static char	*ft_strchr(const char *s, int c)
 	if ((char)c == '\0')
 		return (ptr + i);
 	return (0);
+}
+
+char	*fill_line_buffer(int fd, char *left_c, char *buffer)
+{
+	char	*temp;
+
+	read(fd, )
+}
+
+char	*set_line(char *line_buffer)
+{
+	
+}
+
+char	*get_next_line(int fd)
+{
 }
