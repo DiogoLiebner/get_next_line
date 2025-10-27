@@ -13,7 +13,14 @@
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-#include <unistd.h>
-#include <stdlib.h>
+# include <unistd.h>
+# include <stdlib.h>
 
 char    *get_next_line(int fd);
+char    *ft_strdup(char *src);
+char    *ft_substr(char *str, unsigned int start, size_t len);
+char    *ft_strjoin(char *str1, char *str2);
+void    *ft_strfill(char *fstr, char *str1, char *str2);
+size_t  ft_strlen(char *str);
+
+#endif
