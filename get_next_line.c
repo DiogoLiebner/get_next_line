@@ -30,18 +30,82 @@ static char	*ft_strchr(char *s, int c)
 	return (0);
 }
 
-static char	*fill_line_buffer(int fd, char *left_c, char *buffer)
+static char	*fill_line_buffer(int fd, char *remchar, char *buffer)
 {
 	char	*temp;
+	size_t	rvalue;
 
-	read(fd, buffer, BUFFER_SIZE);
+	rvalue = 1;
+	while (rvalue > 0)
+	{
+		rvalue = read(fd, buffer, BUFFER_SIZE);
+		if (rvalue == -1)
+		{
+			free(remchar);
+			return (NULL);
+		}
+		else if (rvalue == 0)
+			break ;
+		buffer[rvalue] = 0;
+		if (remchar == ' \0')
+			line = ft_strdup("");
+		temp = remchar;
+		remchar = ft_strjoin(temp, buffer);
+		free(temp);
+		temp = NULL;
+		if (ft_strchr(buffer, '\n'))
+			break;
+	}
+	return (remchar);
 }
 
-static char	*set_line(char *line_buffer)
+static char	*set_line(char *linebuffer)
 {
+	char	*remchar;
+	size_t	i;
 
+	i = 0;
+	while (linebuffer[i] != '\n' || linebuffer[i] '\0')
+		i++;
+	if (linebuffer[i] == 0 || linebuffer[1] == 0)
+		return (NULL);
+	remchar = ft_substr(linebuffer, i + 1, ft_strlen(linebuffer) - i);
+	if (*remchar == 0)
+	{
+		free(remchar);
+		remchar = NULL;
+	}
+	linebuffer[i + 1] = 0;
+	return (remchar);
 }
 
 char	*get_next_line(int fd)
 {
+	static char	*remchar;
+	char		*line;
+	char		*buffer;
+
+	buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+	{
+		free(remchar);
+		free(buffer);
+		remchar = NULL;
+		buffer = NULL;
+		return (NULL);
+	}
+	if (!buffer)
+		return (NULL);
+	line = fill_line_buffer(fd, remchar, buffer);
+	free(buffer);
+	buffer = NULL;
+	if (!line)
+		return (NULL);
+	remchar = set_line(line);
+	return (line);
 }
+	
+/*int	main(void)
+{
+
+}*/
