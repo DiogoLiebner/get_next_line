@@ -6,7 +6,7 @@
 /*   By: dlima-li <dlima-li@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 13:09:04 by dlima-li          #+#    #+#             */
-/*   Updated: 2025/10/27 16:18:38 by dlima-li         ###   ########.fr       */
+/*   Updated: 2025/10/29 15:27:14 by dlima-li         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static char	*ft_strchr(char *s, int c)
 static char	*fill_line_buffer(int fd, char *remchar, char *buffer)
 {
 	char	*temp;
-	size_t	rvalue;
+	int		rvalue;
 
 	rvalue = 1;
 	while (rvalue > 0)
@@ -47,14 +47,14 @@ static char	*fill_line_buffer(int fd, char *remchar, char *buffer)
 		else if (rvalue == 0)
 			break ;
 		buffer[rvalue] = 0;
-		if (remchar == ' \0')
-			line = ft_strdup("");
+		if (remchar == NULL)
+			remchar = ft_strdup("");
 		temp = remchar;
 		remchar = ft_strjoin(temp, buffer);
 		free(temp);
 		temp = NULL;
 		if (ft_strchr(buffer, '\n'))
-			break;
+			break ;
 	}
 	return (remchar);
 }
@@ -65,7 +65,7 @@ static char	*set_line(char *linebuffer)
 	size_t	i;
 
 	i = 0;
-	while (linebuffer[i] != '\n' || linebuffer[i] '\0')
+	while (linebuffer[i] != '\n' && linebuffer[i] != '\0')
 		i++;
 	if (linebuffer[i] == 0 || linebuffer[1] == 0)
 		return (NULL);
@@ -85,6 +85,7 @@ char	*get_next_line(int fd)
 	char		*line;
 	char		*buffer;
 
+	buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
 	{
 		free(remchar);
@@ -93,9 +94,9 @@ char	*get_next_line(int fd)
 		buffer = NULL;
 		return (NULL);
 	}
-	buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buffer)
 		return (NULL);
+	buffer[0] = '\0';
 	line = fill_line_buffer(fd, remchar, buffer);
 	free(buffer);
 	buffer = NULL;
@@ -105,18 +106,22 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-/*
+/*#include <stdio.h>
+
 int	main(void)
 {
-	int	fd = open("text.txt", O_RDONLY); // test with Regular file, empty file and non-existing file
-	char *line;
+	int	i = 1;
+	int	fd = open("test_file.txt", O_RDONLY); // test with Regular file, empty file and non-existing file
+	char 	*line;
 	if (fd < 0)
 		return (0);
 	while ((line = get_next_line(fd)) != NULL)
 	{
 		printf("%s", line);
+		printf("NUMBER OF LINE BREAKS: %d\n", i++);
 		free(line);
 	}
+	printf("END OF FILE (line = get_next_line(fd) == NULL)\n");
 	close(fd);
 	return (0);
 }*/

@@ -41,14 +41,8 @@ char	*ft_substr(char *str, unsigned int start, size_t len)
 {
 	char	*fstr;
 	size_t	i;
-	size_t	istrlen;
 
 	i = 0;
-	istrlen = ft_strlen(str);
-	if (!str)
-		return (NULL);
-	if (start >= istrlen)
-		return (ft_strdup(""));
 	if (len > ft_strlen(str + start))
 		len = ft_strlen(str + start);
 	fstr = malloc(sizeof(char) * (len + 1));
@@ -79,11 +73,20 @@ char	*ft_strjoin(char *str1, char *str2)
 	return (fstr);
 }
 
-void	*ft_strfill(char *fstr, char *str1, char *str2)
+void	ft_strfill(char *fstr, char *str1, char *str2)
 {
-	while (str1)
-		*fstr++ = *str1++;
-	while (str2)
-		*fstr++ = *str2++;
-	*fstr = '\0';
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (str1[i] != '\0')
+	{
+		fstr[i] = str1[i];
+		i++;
+	}
+	while (str2[j] != '\0')
+		fstr[i++] = str2[j++];
+	fstr[i] = '\0';
+	return ;
 }
