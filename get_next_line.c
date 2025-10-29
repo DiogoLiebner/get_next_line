@@ -85,7 +85,6 @@ char	*get_next_line(int fd)
 	char		*line;
 	char		*buffer;
 
-	buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
 	{
 		free(remchar);
@@ -94,6 +93,7 @@ char	*get_next_line(int fd)
 		buffer = NULL;
 		return (NULL);
 	}
+	buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buffer)
 		return (NULL);
 	line = fill_line_buffer(fd, remchar, buffer);
@@ -104,8 +104,19 @@ char	*get_next_line(int fd)
 	remchar = set_line(line);
 	return (line);
 }
-	
-/*int	main(void)
-{
 
+/*
+int	main(void)
+{
+	int	fd = open("text.txt", O_RDONLY); // test with Regular file, empty file and non-existing file
+	char *line;
+	if (fd < 0)
+		return (0);
+	while ((line = get_next_line(fd)) != NULL)
+	{
+		printf("%s", line);
+		free(line);
+	}
+	close(fd);
+	return (0);
 }*/
